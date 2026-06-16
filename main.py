@@ -17,8 +17,16 @@ def prev_slide():
 
 slide_content ={
     # 0 will be reserved for the rationale pdf and the final slide will be reserved for the reflection pdf
-    0: {"img": "placeholder.pdf", "audio": "placeholder.mp3"},
-    1: {"img": "placeholder.png", "audio": "placeholder.mp3", "notes": "placeholder.txt"},
+    0: {"img": "resources/pdf/rationale.pdf"}, 
+    1: {"img": "resources/image/slide0.png", "audio": "resources/audio/slide0.m4a", "notes": "resources/notes/slide0.txt"},
+    2: {"img": "resources/image/slide1.png", "audio": "resources/audio/slide1.m4a", "notes": "resources/notes/slide1.txt"},
+    3: {"img": "resources/image/slide2.png", "audio": "resources/audio/slide2.m4a", "notes": "resources/notes/slide2.txt"},
+    4: {"img": "resources/image/slide3.png", "audio": "resources/audio/slide3.m4a", "notes": "resources/notes/slide3.txt"},
+    5: {"img": "resources/image/slide4.png", "audio": "resources/audio/slide4.m4a", "notes": "resources/notes/slide4.txt"},
+    6: {"img": "resources/image/slide5.png", "audio": "resources/audio/slide5.m4a", "notes": "resources/notes/slide5.txt"},
+    7: {"img": "resources/image/slide6.png", "audio": "resources/audio/slide6.m4a", "notes": "resources/notes/slide6.txt"},
+    8: {"img": "resources/image/slide7.png", "audio": "resources/audio/slide7.m4a", "notes": "resources/notes/slide7.txt"},
+    9: {"img": "resources/pdf/reflection.pdf"}
 }
 
 col1, col2 = st.columns(2)
@@ -45,7 +53,7 @@ if st.session_state.slide == 0:
 
 elif st.session_state.slide > 0 and st.session_state.slide < len(slide_content) - 1:
     
-    st.image(slide_content[st.session_state.slide]["img"], caption=f"Slide {st.session_state.slide + 1}")
+    st.image(slide_content[st.session_state.slide]["img"])
 
     with open(slide_content[st.session_state.slide]["notes"], "r", encoding="utf-8") as file:
         file_contents = file.read()
