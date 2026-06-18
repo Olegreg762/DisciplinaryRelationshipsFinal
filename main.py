@@ -1,4 +1,28 @@
 import streamlit as st
+import smtplib
+from email.mime.text import MIMEText
+
+def send_email():
+    
+    sender_email =st.secrets["SENDEMAIL"]
+    sender_password = st.secrets["PASS"]
+    body = "Application opened"
+
+    msg = MIMEText(f"From: {sender_email}\n\n{body}")
+    msg["Subject"] = body
+    msg["From"] = sender_email
+    msg["To"] = sender_email
+
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(sender_email, sender_password)
+            server.sendmail(sender_email, sender_email, msg.as_string())
+    except Exception as e:
+        pass
+    st.session_state.email_sent = True
+
+if "email_sent" not in st.session_state:
+    send_email()
 
 st.title("Disciplinary Relationships Final Project")
 
@@ -26,7 +50,8 @@ slide_content ={
     6: {"img": "resources/image/slide5.png", "audio": "resources/audio/slide5.m4a", "notes": "resources/notes/slide5.txt"},
     7: {"img": "resources/image/slide6.png", "audio": "resources/audio/slide6.m4a", "notes": "resources/notes/slide6.txt"},
     8: {"img": "resources/image/slide7.png", "audio": "resources/audio/slide7.m4a", "notes": "resources/notes/slide7.txt"},
-    9: {"img": "resources/pdf/reflection.pdf"}
+    9: {"img": "resources/image/slide8.png"},
+    10: {"img": "resources/pdf/reflection.pdf"}
 }
 
 col1, col2 = st.columns(2)
@@ -55,11 +80,12 @@ elif st.session_state.slide > 0 and st.session_state.slide < len(slide_content) 
     
     st.image(slide_content[st.session_state.slide]["img"])
 
-    with open(slide_content[st.session_state.slide]["notes"], "r", encoding="utf-8") as file:
-        file_contents = file.read()
-    st.write(file_contents)
+    if st.session_state.slide != len(slide_content) - 2:
+        with open(slide_content[st.session_state.slide]["notes"], "r", encoding="utf-8") as file:
+            file_contents = file.read()
+        st.write(file_contents)
 
-    st.audio(slide_content[st.session_state.slide]["audio"], autoplay=True)
+        st.audio(slide_content[st.session_state.slide]["audio"], autoplay=True)
 
 elif st.session_state.slide == len(slide_content) - 1:
     st.header("End of Slideshow")
